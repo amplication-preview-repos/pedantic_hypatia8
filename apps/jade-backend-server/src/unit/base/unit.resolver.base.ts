@@ -26,8 +26,8 @@ import { UnitFindUniqueArgs } from "./UnitFindUniqueArgs";
 import { CreateUnitArgs } from "./CreateUnitArgs";
 import { UpdateUnitArgs } from "./UpdateUnitArgs";
 import { DeleteUnitArgs } from "./DeleteUnitArgs";
-import { ResidentFindManyArgs } from "../../resident/base/ResidentFindManyArgs";
-import { Resident } from "../../resident/base/Resident";
+import { UserFindManyArgs } from "../../user/base/UserFindManyArgs";
+import { User } from "../../user/base/User";
 import { Building } from "../../building/base/Building";
 import { UnitService } from "../unit.service";
 @common.UseGuards(GqlDefaultAuthGuard, gqlACGuard.GqlACGuard)
@@ -152,17 +152,17 @@ export class UnitResolverBase {
   }
 
   @common.UseInterceptors(AclFilterResponseInterceptor)
-  @graphql.ResolveField(() => [Resident], { name: "residents" })
+  @graphql.ResolveField(() => [User], { name: "users" })
   @nestAccessControl.UseRoles({
-    resource: "Resident",
+    resource: "User",
     action: "read",
     possession: "any",
   })
-  async findResidents(
+  async findUsers(
     @graphql.Parent() parent: Unit,
-    @graphql.Args() args: ResidentFindManyArgs
-  ): Promise<Resident[]> {
-    const results = await this.service.findResidents(parent.id, args);
+    @graphql.Args() args: UserFindManyArgs
+  ): Promise<User[]> {
+    const results = await this.service.findUsers(parent.id, args);
 
     if (!results) {
       return [];

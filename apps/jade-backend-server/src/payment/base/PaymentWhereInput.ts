@@ -16,8 +16,8 @@ import { Type } from "class-transformer";
 import { IsOptional, ValidateNested } from "class-validator";
 import { FloatNullableFilter } from "../../util/FloatNullableFilter";
 import { DateTimeNullableFilter } from "../../util/DateTimeNullableFilter";
-import { ResidentWhereUniqueInput } from "../../resident/base/ResidentWhereUniqueInput";
 import { StringNullableFilter } from "../../util/StringNullableFilter";
+import { UserListRelationFilter } from "../../user/base/UserListRelationFilter";
 
 @InputType()
 class PaymentWhereInput {
@@ -56,18 +56,6 @@ class PaymentWhereInput {
 
   @ApiProperty({
     required: false,
-    type: () => ResidentWhereUniqueInput,
-  })
-  @ValidateNested()
-  @Type(() => ResidentWhereUniqueInput)
-  @IsOptional()
-  @Field(() => ResidentWhereUniqueInput, {
-    nullable: true,
-  })
-  resident?: ResidentWhereUniqueInput;
-
-  @ApiProperty({
-    required: false,
     type: StringNullableFilter,
   })
   @Type(() => StringNullableFilter)
@@ -76,6 +64,18 @@ class PaymentWhereInput {
     nullable: true,
   })
   stripePaymentId?: StringNullableFilter;
+
+  @ApiProperty({
+    required: false,
+    type: () => UserListRelationFilter,
+  })
+  @ValidateNested()
+  @Type(() => UserListRelationFilter)
+  @IsOptional()
+  @Field(() => UserListRelationFilter, {
+    nullable: true,
+  })
+  users?: UserListRelationFilter;
 }
 
 export { PaymentWhereInput as PaymentWhereInput };

@@ -6,6 +6,5 @@ export type PaymentOrderByInput = {
   updatedAt?: SortOrder;
   amount?: SortOrder;
   paymentDate?: SortOrder;
-  residentId?: SortOrder;
   stripePaymentId?: SortOrder;
 };

@@ -1,8 +1,8 @@
-import { ResidentWhereUniqueInput } from "../resident/ResidentWhereUniqueInput";
+import { UserUpdateManyWithoutPaymentsInput } from "./UserUpdateManyWithoutPaymentsInput";
 
 export type PaymentUpdateInput = {
   amount?: number | null;
   paymentDate?: Date | null;
-  resident?: ResidentWhereUniqueInput | null;
   stripePaymentId?: string | null;
+  users?: UserUpdateManyWithoutPaymentsInput;
 };

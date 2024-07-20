@@ -19,10 +19,10 @@ import {
   IsNumber,
   Max,
 } from "class-validator";
-import { ResidentUpdateManyWithoutUnitsInput } from "./ResidentUpdateManyWithoutUnitsInput";
-import { Type } from "class-transformer";
 import { BuildingWhereUniqueInput } from "../../building/base/BuildingWhereUniqueInput";
+import { Type } from "class-transformer";
 import { Decimal } from "decimal.js";
+import { UserUpdateManyWithoutUnitsInput } from "./UserUpdateManyWithoutUnitsInput";
 
 @InputType()
 class UnitUpdateInput {
@@ -37,18 +37,6 @@ class UnitUpdateInput {
     nullable: true,
   })
   unitNumber?: string | null;
-
-  @ApiProperty({
-    required: false,
-    type: () => ResidentUpdateManyWithoutUnitsInput,
-  })
-  @ValidateNested()
-  @Type(() => ResidentUpdateManyWithoutUnitsInput)
-  @IsOptional()
-  @Field(() => ResidentUpdateManyWithoutUnitsInput, {
-    nullable: true,
-  })
-  residents?: ResidentUpdateManyWithoutUnitsInput;
 
   @ApiProperty({
     required: false,
@@ -73,6 +61,18 @@ class UnitUpdateInput {
     nullable: true,
   })
   dueAmount?: Decimal;
+
+  @ApiProperty({
+    required: false,
+    type: () => UserUpdateManyWithoutUnitsInput,
+  })
+  @ValidateNested()
+  @Type(() => UserUpdateManyWithoutUnitsInput)
+  @IsOptional()
+  @Field(() => UserUpdateManyWithoutUnitsInput, {
+    nullable: true,
+  })
+  users?: UserUpdateManyWithoutUnitsInput;
 }
 
 export { UnitUpdateInput as UnitUpdateInput };

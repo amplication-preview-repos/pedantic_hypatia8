@@ -5,9 +5,7 @@ import {
   ShowProps,
   TextField,
   DateField,
-  ReferenceField,
 } from "react-admin";
-import { RESIDENT_TITLE_FIELD } from "../resident/ResidentTitle";
 
 export const PaymentShow = (props: ShowProps): React.ReactElement => {
   return (
@@ -18,13 +16,6 @@ export const PaymentShow = (props: ShowProps): React.ReactElement => {
         <DateField source="updatedAt" label="Updated At" />
         <TextField label="Amount" source="amount" />
         <TextField label="PaymentDate" source="paymentDate" />
-        <ReferenceField
-          label="Resident"
-          source="resident.id"
-          reference="Resident"
-        >
-          <TextField source={RESIDENT_TITLE_FIELD} />
-        </ReferenceField>
         <TextField label="Stripe Payment ID" source="stripePaymentId" />
       </SimpleShowLayout>
     </Show>

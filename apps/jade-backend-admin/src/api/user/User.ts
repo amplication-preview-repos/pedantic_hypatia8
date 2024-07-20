@@ -1,4 +1,6 @@
 import { JsonValue } from "type-fest";
+import { Unit } from "../unit/Unit";
+import { Payment } from "../payment/Payment";
 
 export type User = {
   id: string;
@@ -9,4 +11,7 @@ export type User = {
   username: string;
   email: string | null;
   roles: JsonValue;
+  units?: Array<Unit>;
+  payments?: Array<Payment>;
+  phoneNumber: string | null;
 };

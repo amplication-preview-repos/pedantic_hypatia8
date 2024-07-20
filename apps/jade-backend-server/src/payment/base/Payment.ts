@@ -19,12 +19,12 @@ import {
   Min,
   Max,
   IsOptional,
-  ValidateNested,
   MaxLength,
+  ValidateNested,
 } from "class-validator";
 
 import { Type } from "class-transformer";
-import { Resident } from "../../resident/base/Resident";
+import { User } from "../../user/base/User";
 
 @ObjectType()
 class Payment {
@@ -78,15 +78,6 @@ class Payment {
 
   @ApiProperty({
     required: false,
-    type: () => Resident,
-  })
-  @ValidateNested()
-  @Type(() => Resident)
-  @IsOptional()
-  resident?: Resident | null;
-
-  @ApiProperty({
-    required: false,
     type: String,
   })
   @IsString()
@@ -96,6 +87,15 @@ class Payment {
     nullable: true,
   })
   stripePaymentId!: string | null;
+
+  @ApiProperty({
+    required: false,
+    type: () => [User],
+  })
+  @ValidateNested()
+  @Type(() => User)
+  @IsOptional()
+  users?: Array<User>;
 }
 
 export { Payment as Payment };

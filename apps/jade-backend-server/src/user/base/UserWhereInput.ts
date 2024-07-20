@@ -13,8 +13,10 @@ import { InputType, Field } from "@nestjs/graphql";
 import { ApiProperty } from "@nestjs/swagger";
 import { StringFilter } from "../../util/StringFilter";
 import { Type } from "class-transformer";
-import { IsOptional } from "class-validator";
+import { IsOptional, ValidateNested } from "class-validator";
 import { StringNullableFilter } from "../../util/StringNullableFilter";
+import { UnitListRelationFilter } from "../../unit/base/UnitListRelationFilter";
+import { PaymentListRelationFilter } from "../../payment/base/PaymentListRelationFilter";
 
 @InputType()
 class UserWhereInput {
@@ -72,6 +74,41 @@ class UserWhereInput {
     nullable: true,
   })
   email?: StringNullableFilter;
+
+  @ApiProperty({
+    required: false,
+    type: () => UnitListRelationFilter,
+  })
+  @ValidateNested()
+  @Type(() => UnitListRelationFilter)
+  @IsOptional()
+  @Field(() => UnitListRelationFilter, {
+    nullable: true,
+  })
+  units?: UnitListRelationFilter;
+
+  @ApiProperty({
+    required: false,
+    type: () => PaymentListRelationFilter,
+  })
+  @ValidateNested()
+  @Type(() => PaymentListRelationFilter)
+  @IsOptional()
+  @Field(() => PaymentListRelationFilter, {
+    nullable: true,
+  })
+  payments?: PaymentListRelationFilter;
+
+  @ApiProperty({
+    required: false,
+    type: StringNullableFilter,
+  })
+  @Type(() => StringNullableFilter)
+  @IsOptional()
+  @Field(() => StringNullableFilter, {
+    nullable: true,
+  })
+  phoneNumber?: StringNullableFilter;
 }
 
 export { UserWhereInput as UserWhereInput };

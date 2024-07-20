@@ -26,9 +26,9 @@ import { Unit } from "./Unit";
 import { UnitFindManyArgs } from "./UnitFindManyArgs";
 import { UnitWhereUniqueInput } from "./UnitWhereUniqueInput";
 import { UnitUpdateInput } from "./UnitUpdateInput";
-import { ResidentFindManyArgs } from "../../resident/base/ResidentFindManyArgs";
-import { Resident } from "../../resident/base/Resident";
-import { ResidentWhereUniqueInput } from "../../resident/base/ResidentWhereUniqueInput";
+import { UserFindManyArgs } from "../../user/base/UserFindManyArgs";
+import { User } from "../../user/base/User";
+import { UserWhereUniqueInput } from "../../user/base/UserWhereUniqueInput";
 
 @swagger.ApiBearerAuth()
 @common.UseGuards(defaultAuthGuard.DefaultAuthGuard, nestAccessControl.ACGuard)
@@ -245,19 +245,19 @@ export class UnitControllerBase {
   }
 
   @common.UseInterceptors(AclFilterResponseInterceptor)
-  @common.Get("/:id/residents")
-  @ApiNestedQuery(ResidentFindManyArgs)
+  @common.Get("/:id/users")
+  @ApiNestedQuery(UserFindManyArgs)
   @nestAccessControl.UseRoles({
-    resource: "Resident",
+    resource: "User",
     action: "read",
     possession: "any",
   })
-  async findResidents(
+  async findUsers(
     @common.Req() request: Request,
     @common.Param() params: UnitWhereUniqueInput
-  ): Promise<Resident[]> {
-    const query = plainToClass(ResidentFindManyArgs, request.query);
-    const results = await this.service.findResidents(params.id, {
+  ): Promise<User[]> {
+    const query = plainToClass(UserFindManyArgs, request.query);
+    const results = await this.service.findUsers(params.id, {
       ...query,
       select: {
         id: true,
@@ -265,14 +265,10 @@ export class UnitControllerBase {
         updatedAt: true,
         firstName: true,
         lastName: true,
+        username: true,
         email: true,
+        roles: true,
         phoneNumber: true,
-
-        unit: {
-          select: {
-            id: true,
-          },
-        },
       },
     });
     if (results === null) {
@@ -283,18 +279,18 @@ export class UnitControllerBase {
     return results;
   }
 
-  @common.Post("/:id/residents")
+  @common.Post("/:id/users")
   @nestAccessControl.UseRoles({
     resource: "Unit",
     action: "update",
     possession: "any",
   })
-  async connectResidents(
+  async connectUsers(
     @common.Param() params: UnitWhereUniqueInput,
-    @common.Body() body: ResidentWhereUniqueInput[]
+    @common.Body() body: UserWhereUniqueInput[]
   ): Promise<void> {
     const data = {
-      residents: {
+      users: {
         connect: body,
       },
     };
@@ -305,18 +301,18 @@ export class UnitControllerBase {
     });
   }
 
-  @common.Patch("/:id/residents")
+  @common.Patch("/:id/users")
   @nestAccessControl.UseRoles({
     resource: "Unit",
     action: "update",
     possession: "any",
   })
-  async updateResidents(
+  async updateUsers(
     @common.Param() params: UnitWhereUniqueInput,
-    @common.Body() body: ResidentWhereUniqueInput[]
+    @common.Body() body: UserWhereUniqueInput[]
   ): Promise<void> {
     const data = {
-      residents: {
+      users: {
         set: body,
       },
     };
@@ -327,18 +323,18 @@ export class UnitControllerBase {
     });
   }
 
-  @common.Delete("/:id/residents")
+  @common.Delete("/:id/users")
   @nestAccessControl.UseRoles({
     resource: "Unit",
     action: "update",
     possession: "any",
   })
-  async disconnectResidents(
+  async disconnectUsers(
     @common.Param() params: UnitWhereUniqueInput,
-    @common.Body() body: ResidentWhereUniqueInput[]
+    @common.Body() body: UserWhereUniqueInput[]
   ): Promise<void> {
     const data = {
-      residents: {
+      users: {
         disconnect: body,
       },
     };

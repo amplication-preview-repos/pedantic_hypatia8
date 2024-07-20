@@ -1,4 +1,4 @@
-import { Resident } from "../resident/Resident";
+import { User } from "../user/User";
 
 export type Payment = {
   id: string;
@@ -6,6 +6,6 @@ export type Payment = {
   updatedAt: Date;
   amount: number | null;
   paymentDate: Date | null;
-  resident?: Resident | null;
   stripePaymentId: string | null;
+  users?: Array<User>;
 };

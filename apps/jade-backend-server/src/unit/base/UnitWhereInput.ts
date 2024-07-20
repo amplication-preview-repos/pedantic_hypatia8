@@ -15,9 +15,9 @@ import { StringFilter } from "../../util/StringFilter";
 import { Type } from "class-transformer";
 import { IsOptional, ValidateNested } from "class-validator";
 import { StringNullableFilter } from "../../util/StringNullableFilter";
-import { ResidentListRelationFilter } from "../../resident/base/ResidentListRelationFilter";
 import { BuildingWhereUniqueInput } from "../../building/base/BuildingWhereUniqueInput";
 import { DecimalFilter } from "../../util/DecimalFilter";
+import { UserListRelationFilter } from "../../user/base/UserListRelationFilter";
 
 @InputType()
 class UnitWhereInput {
@@ -45,18 +45,6 @@ class UnitWhereInput {
 
   @ApiProperty({
     required: false,
-    type: () => ResidentListRelationFilter,
-  })
-  @ValidateNested()
-  @Type(() => ResidentListRelationFilter)
-  @IsOptional()
-  @Field(() => ResidentListRelationFilter, {
-    nullable: true,
-  })
-  residents?: ResidentListRelationFilter;
-
-  @ApiProperty({
-    required: false,
     type: () => BuildingWhereUniqueInput,
   })
   @ValidateNested()
@@ -77,6 +65,18 @@ class UnitWhereInput {
     nullable: true,
   })
   dueAmount?: DecimalFilter;
+
+  @ApiProperty({
+    required: false,
+    type: () => UserListRelationFilter,
+  })
+  @ValidateNested()
+  @Type(() => UserListRelationFilter)
+  @IsOptional()
+  @Field(() => UserListRelationFilter, {
+    nullable: true,
+  })
+  users?: UserListRelationFilter;
 }
 
 export { UnitWhereInput as UnitWhereInput };

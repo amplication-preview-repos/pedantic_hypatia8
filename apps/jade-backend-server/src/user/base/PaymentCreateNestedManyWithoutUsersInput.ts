@@ -10,18 +10,19 @@ https://docs.amplication.com/how-to/custom-code
 ------------------------------------------------------------------------------
   */
 import { InputType, Field } from "@nestjs/graphql";
+import { PaymentWhereUniqueInput } from "../../payment/base/PaymentWhereUniqueInput";
 import { ApiProperty } from "@nestjs/swagger";
-import { IsString } from "class-validator";
 
 @InputType()
-class ResidentWhereUniqueInput {
-  @ApiProperty({
-    required: true,
-    type: String,
+class PaymentCreateNestedManyWithoutUsersInput {
+  @Field(() => [PaymentWhereUniqueInput], {
+    nullable: true,
   })
-  @IsString()
-  @Field(() => String)
-  id!: string;
+  @ApiProperty({
+    required: false,
+    type: () => [PaymentWhereUniqueInput],
+  })
+  connect?: Array<PaymentWhereUniqueInput>;
 }
 
-export { ResidentWhereUniqueInput as ResidentWhereUniqueInput };
+export { PaymentCreateNestedManyWithoutUsersInput as PaymentCreateNestedManyWithoutUsersInput };

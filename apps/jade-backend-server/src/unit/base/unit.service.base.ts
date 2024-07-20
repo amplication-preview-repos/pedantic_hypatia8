@@ -10,11 +10,10 @@ https://docs.amplication.com/how-to/custom-code
 ------------------------------------------------------------------------------
   */
 import { PrismaService } from "../../prisma/prisma.service";
-
 import {
   Prisma,
   Unit as PrismaUnit,
-  Resident as PrismaResident,
+  User as PrismaUser,
   Building as PrismaBuilding,
 } from "@prisma/client";
 
@@ -41,15 +40,15 @@ export class UnitServiceBase {
     return this.prisma.unit.delete(args);
   }
 
-  async findResidents(
+  async findUsers(
     parentId: string,
-    args: Prisma.ResidentFindManyArgs
-  ): Promise<PrismaResident[]> {
+    args: Prisma.UserFindManyArgs
+  ): Promise<PrismaUser[]> {
     return this.prisma.unit
       .findUniqueOrThrow({
         where: { id: parentId },
       })
-      .residents(args);
+      .users(args);
   }
 
   async getBuilding(parentId: string): Promise<PrismaBuilding | null> {

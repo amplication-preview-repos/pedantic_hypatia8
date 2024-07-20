@@ -11,10 +11,18 @@ https://docs.amplication.com/how-to/custom-code
   */
 import { InputType, Field } from "@nestjs/graphql";
 import { ApiProperty } from "@nestjs/swagger";
-import { IsString, MaxLength, IsOptional } from "class-validator";
+import {
+  IsString,
+  MaxLength,
+  IsOptional,
+  ValidateNested,
+} from "class-validator";
 import { IsJSONValue } from "../../validators";
 import { GraphQLJSON } from "graphql-type-json";
 import { InputJsonValue } from "../../types";
+import { UnitCreateNestedManyWithoutUsersInput } from "./UnitCreateNestedManyWithoutUsersInput";
+import { Type } from "class-transformer";
+import { PaymentCreateNestedManyWithoutUsersInput } from "./PaymentCreateNestedManyWithoutUsersInput";
 
 @InputType()
 class UserCreateInput {
@@ -75,6 +83,42 @@ class UserCreateInput {
   @IsJSONValue()
   @Field(() => GraphQLJSON)
   roles!: InputJsonValue;
+
+  @ApiProperty({
+    required: false,
+    type: () => UnitCreateNestedManyWithoutUsersInput,
+  })
+  @ValidateNested()
+  @Type(() => UnitCreateNestedManyWithoutUsersInput)
+  @IsOptional()
+  @Field(() => UnitCreateNestedManyWithoutUsersInput, {
+    nullable: true,
+  })
+  units?: UnitCreateNestedManyWithoutUsersInput;
+
+  @ApiProperty({
+    required: false,
+    type: () => PaymentCreateNestedManyWithoutUsersInput,
+  })
+  @ValidateNested()
+  @Type(() => PaymentCreateNestedManyWithoutUsersInput)
+  @IsOptional()
+  @Field(() => PaymentCreateNestedManyWithoutUsersInput, {
+    nullable: true,
+  })
+  payments?: PaymentCreateNestedManyWithoutUsersInput;
+
+  @ApiProperty({
+    required: false,
+    type: String,
+  })
+  @IsString()
+  @MaxLength(1000)
+  @IsOptional()
+  @Field(() => String, {
+    nullable: true,
+  })
+  phoneNumber?: string | null;
 }
 
 export { UserCreateInput as UserCreateInput };

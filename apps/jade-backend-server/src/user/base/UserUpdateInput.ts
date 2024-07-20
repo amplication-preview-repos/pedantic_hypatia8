@@ -11,10 +11,18 @@ https://docs.amplication.com/how-to/custom-code
   */
 import { InputType, Field } from "@nestjs/graphql";
 import { ApiProperty } from "@nestjs/swagger";
-import { IsString, MaxLength, IsOptional } from "class-validator";
+import {
+  IsString,
+  MaxLength,
+  IsOptional,
+  ValidateNested,
+} from "class-validator";
 import { IsJSONValue } from "../../validators";
 import { GraphQLJSON } from "graphql-type-json";
 import { InputJsonValue } from "../../types";
+import { UnitUpdateManyWithoutUsersInput } from "./UnitUpdateManyWithoutUsersInput";
+import { Type } from "class-transformer";
+import { PaymentUpdateManyWithoutUsersInput } from "./PaymentUpdateManyWithoutUsersInput";
 
 @InputType()
 class UserUpdateInput {
@@ -84,6 +92,42 @@ class UserUpdateInput {
     nullable: true,
   })
   roles?: InputJsonValue;
+
+  @ApiProperty({
+    required: false,
+    type: () => UnitUpdateManyWithoutUsersInput,
+  })
+  @ValidateNested()
+  @Type(() => UnitUpdateManyWithoutUsersInput)
+  @IsOptional()
+  @Field(() => UnitUpdateManyWithoutUsersInput, {
+    nullable: true,
+  })
+  units?: UnitUpdateManyWithoutUsersInput;
+
+  @ApiProperty({
+    required: false,
+    type: () => PaymentUpdateManyWithoutUsersInput,
+  })
+  @ValidateNested()
+  @Type(() => PaymentUpdateManyWithoutUsersInput)
+  @IsOptional()
+  @Field(() => PaymentUpdateManyWithoutUsersInput, {
+    nullable: true,
+  })
+  payments?: PaymentUpdateManyWithoutUsersInput;
+
+  @ApiProperty({
+    required: false,
+    type: String,
+  })
+  @IsString()
+  @MaxLength(1000)
+  @IsOptional()
+  @Field(() => String, {
+    nullable: true,
+  })
+  phoneNumber?: string | null;
 }
 
 export { UserUpdateInput as UserUpdateInput };

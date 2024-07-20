@@ -19,10 +19,10 @@ import {
   IsNumber,
   Max,
 } from "class-validator";
-import { ResidentCreateNestedManyWithoutUnitsInput } from "./ResidentCreateNestedManyWithoutUnitsInput";
-import { Type } from "class-transformer";
 import { BuildingWhereUniqueInput } from "../../building/base/BuildingWhereUniqueInput";
+import { Type } from "class-transformer";
 import { Decimal } from "decimal.js";
+import { UserCreateNestedManyWithoutUnitsInput } from "./UserCreateNestedManyWithoutUnitsInput";
 
 @InputType()
 class UnitCreateInput {
@@ -37,18 +37,6 @@ class UnitCreateInput {
     nullable: true,
   })
   unitNumber?: string | null;
-
-  @ApiProperty({
-    required: false,
-    type: () => ResidentCreateNestedManyWithoutUnitsInput,
-  })
-  @ValidateNested()
-  @Type(() => ResidentCreateNestedManyWithoutUnitsInput)
-  @IsOptional()
-  @Field(() => ResidentCreateNestedManyWithoutUnitsInput, {
-    nullable: true,
-  })
-  residents?: ResidentCreateNestedManyWithoutUnitsInput;
 
   @ApiProperty({
     required: false,
@@ -70,6 +58,18 @@ class UnitCreateInput {
   @Max(99999999999)
   @Field(() => Float)
   dueAmount!: Decimal;
+
+  @ApiProperty({
+    required: false,
+    type: () => UserCreateNestedManyWithoutUnitsInput,
+  })
+  @ValidateNested()
+  @Type(() => UserCreateNestedManyWithoutUnitsInput)
+  @IsOptional()
+  @Field(() => UserCreateNestedManyWithoutUnitsInput, {
+    nullable: true,
+  })
+  users?: UserCreateNestedManyWithoutUnitsInput;
 }
 
 export { UnitCreateInput as UnitCreateInput };

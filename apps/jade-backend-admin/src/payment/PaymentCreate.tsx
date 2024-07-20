@@ -6,12 +6,12 @@ import {
   CreateProps,
   NumberInput,
   DateTimeInput,
-  ReferenceInput,
-  SelectInput,
   TextInput,
+  ReferenceArrayInput,
+  SelectArrayInput,
 } from "react-admin";
 
-import { ResidentTitle } from "../resident/ResidentTitle";
+import { UserTitle } from "../user/UserTitle";
 
 export const PaymentCreate = (props: CreateProps): React.ReactElement => {
   return (
@@ -19,14 +19,15 @@ export const PaymentCreate = (props: CreateProps): React.ReactElement => {
       <SimpleForm>
         <NumberInput label="Amount" source="amount" />
         <DateTimeInput label="PaymentDate" source="paymentDate" />
-        <ReferenceInput
-          source="resident.id"
-          reference="Resident"
-          label="Resident"
-        >
-          <SelectInput optionText={ResidentTitle} />
-        </ReferenceInput>
         <TextInput label="Stripe Payment ID" source="stripePaymentId" />
+        <ReferenceArrayInput
+          source="users"
+          reference="User"
+          parse={(value: any) => value && value.map((v: any) => ({ id: v }))}
+          format={(value: any) => value && value.map((v: any) => v.id)}
+        >
+          <SelectArrayInput optionText={UserTitle} />
+        </ReferenceArrayInput>
       </SimpleForm>
     </Create>
   );

@@ -1,8 +1,8 @@
-import { ResidentWhereUniqueInput } from "../resident/ResidentWhereUniqueInput";
+import { UserCreateNestedManyWithoutPaymentsInput } from "./UserCreateNestedManyWithoutPaymentsInput";
 
 export type PaymentCreateInput = {
   amount?: number | null;
   paymentDate?: Date | null;
-  resident?: ResidentWhereUniqueInput | null;
   stripePaymentId?: string | null;
+  users?: UserCreateNestedManyWithoutPaymentsInput;
 };

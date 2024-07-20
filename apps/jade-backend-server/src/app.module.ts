@@ -1,7 +1,6 @@
 import { Module } from "@nestjs/common";
 import { UnitModule } from "./unit/unit.module";
 import { BuildingModule } from "./building/building.module";
-import { ResidentModule } from "./resident/resident.module";
 import { PaymentModule } from "./payment/payment.module";
 import { UserModule } from "./user/user.module";
 import { HealthModule } from "./health/health.module";
@@ -23,7 +22,6 @@ import { AuthModule } from "./auth/auth.module";
     AuthModule,
     UnitModule,
     BuildingModule,
-    ResidentModule,
     PaymentModule,
     UserModule,
     HealthModule,

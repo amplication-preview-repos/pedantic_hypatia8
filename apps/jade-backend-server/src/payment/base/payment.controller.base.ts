@@ -26,6 +26,9 @@ import { Payment } from "./Payment";
 import { PaymentFindManyArgs } from "./PaymentFindManyArgs";
 import { PaymentWhereUniqueInput } from "./PaymentWhereUniqueInput";
 import { PaymentUpdateInput } from "./PaymentUpdateInput";
+import { UserFindManyArgs } from "../../user/base/UserFindManyArgs";
+import { User } from "../../user/base/User";
+import { UserWhereUniqueInput } from "../../user/base/UserWhereUniqueInput";
 
 @swagger.ApiBearerAuth()
 @common.UseGuards(defaultAuthGuard.DefaultAuthGuard, nestAccessControl.ACGuard)
@@ -49,28 +52,13 @@ export class PaymentControllerBase {
     @common.Body() data: PaymentCreateInput
   ): Promise<Payment> {
     return await this.service.createPayment({
-      data: {
-        ...data,
-
-        resident: data.resident
-          ? {
-              connect: data.resident,
-            }
-          : undefined,
-      },
+      data: data,
       select: {
         id: true,
         createdAt: true,
         updatedAt: true,
         amount: true,
         paymentDate: true,
-
-        resident: {
-          select: {
-            id: true,
-          },
-        },
-
         stripePaymentId: true,
       },
     });
@@ -98,13 +86,6 @@ export class PaymentControllerBase {
         updatedAt: true,
         amount: true,
         paymentDate: true,
-
-        resident: {
-          select: {
-            id: true,
-          },
-        },
-
         stripePaymentId: true,
       },
     });
@@ -133,13 +114,6 @@ export class PaymentControllerBase {
         updatedAt: true,
         amount: true,
         paymentDate: true,
-
-        resident: {
-          select: {
-            id: true,
-          },
-        },
-
         stripePaymentId: true,
       },
     });
@@ -170,28 +144,13 @@ export class PaymentControllerBase {
     try {
       return await this.service.updatePayment({
         where: params,
-        data: {
-          ...data,
-
-          resident: data.resident
-            ? {
-                connect: data.resident,
-              }
-            : undefined,
-        },
+        data: data,
         select: {
           id: true,
           createdAt: true,
           updatedAt: true,
           amount: true,
           paymentDate: true,
-
-          resident: {
-            select: {
-              id: true,
-            },
-          },
-
           stripePaymentId: true,
         },
       });
@@ -228,13 +187,6 @@ export class PaymentControllerBase {
           updatedAt: true,
           amount: true,
           paymentDate: true,
-
-          resident: {
-            select: {
-              id: true,
-            },
-          },
-
           stripePaymentId: true,
         },
       });
@@ -246,5 +198,106 @@ export class PaymentControllerBase {
       }
       throw error;
     }
+  }
+
+  @common.UseInterceptors(AclFilterResponseInterceptor)
+  @common.Get("/:id/users")
+  @ApiNestedQuery(UserFindManyArgs)
+  @nestAccessControl.UseRoles({
+    resource: "User",
+    action: "read",
+    possession: "any",
+  })
+  async findUsers(
+    @common.Req() request: Request,
+    @common.Param() params: PaymentWhereUniqueInput
+  ): Promise<User[]> {
+    const query = plainToClass(UserFindManyArgs, request.query);
+    const results = await this.service.findUsers(params.id, {
+      ...query,
+      select: {
+        id: true,
+        createdAt: true,
+        updatedAt: true,
+        firstName: true,
+        lastName: true,
+        username: true,
+        email: true,
+        roles: true,
+        phoneNumber: true,
+      },
+    });
+    if (results === null) {
+      throw new errors.NotFoundException(
+        `No resource was found for ${JSON.stringify(params)}`
+      );
+    }
+    return results;
+  }
+
+  @common.Post("/:id/users")
+  @nestAccessControl.UseRoles({
+    resource: "Payment",
+    action: "update",
+    possession: "any",
+  })
+  async connectUsers(
+    @common.Param() params: PaymentWhereUniqueInput,
+    @common.Body() body: UserWhereUniqueInput[]
+  ): Promise<void> {
+    const data = {
+      users: {
+        connect: body,
+      },
+    };
+    await this.service.updatePayment({
+      where: params,
+      data,
+      select: { id: true },
+    });
+  }
+
+  @common.Patch("/:id/users")
+  @nestAccessControl.UseRoles({
+    resource: "Payment",
+    action: "update",
+    possession: "any",
+  })
+  async updateUsers(
+    @common.Param() params: PaymentWhereUniqueInput,
+    @common.Body() body: UserWhereUniqueInput[]
+  ): Promise<void> {
+    const data = {
+      users: {
+        set: body,
+      },
+    };
+    await this.service.updatePayment({
+      where: params,
+      data,
+      select: { id: true },
+    });
+  }
+
+  @common.Delete("/:id/users")
+  @nestAccessControl.UseRoles({
+    resource: "Payment",
+    action: "update",
+    possession: "any",
+  })
+  async disconnectUsers(
+    @common.Param() params: PaymentWhereUniqueInput,
+    @common.Body() body: UserWhereUniqueInput[]
+  ): Promise<void> {
+    const data = {
+      users: {
+        disconnect: body,
+      },
+    };
+    await this.service.updatePayment({
+      where: params,
+      data,
+      select: { id: true },
+    });
   }
 }

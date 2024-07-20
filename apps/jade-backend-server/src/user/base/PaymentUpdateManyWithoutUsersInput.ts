@@ -10,37 +10,37 @@ https://docs.amplication.com/how-to/custom-code
 ------------------------------------------------------------------------------
   */
 import { InputType, Field } from "@nestjs/graphql";
-import { ResidentWhereUniqueInput } from "../../resident/base/ResidentWhereUniqueInput";
+import { PaymentWhereUniqueInput } from "../../payment/base/PaymentWhereUniqueInput";
 import { ApiProperty } from "@nestjs/swagger";
 
 @InputType()
-class ResidentUpdateManyWithoutUnitsInput {
-  @Field(() => [ResidentWhereUniqueInput], {
+class PaymentUpdateManyWithoutUsersInput {
+  @Field(() => [PaymentWhereUniqueInput], {
     nullable: true,
   })
   @ApiProperty({
     required: false,
-    type: () => [ResidentWhereUniqueInput],
+    type: () => [PaymentWhereUniqueInput],
   })
-  connect?: Array<ResidentWhereUniqueInput>;
+  connect?: Array<PaymentWhereUniqueInput>;
 
-  @Field(() => [ResidentWhereUniqueInput], {
+  @Field(() => [PaymentWhereUniqueInput], {
     nullable: true,
   })
   @ApiProperty({
     required: false,
-    type: () => [ResidentWhereUniqueInput],
+    type: () => [PaymentWhereUniqueInput],
   })
-  disconnect?: Array<ResidentWhereUniqueInput>;
+  disconnect?: Array<PaymentWhereUniqueInput>;
 
-  @Field(() => [ResidentWhereUniqueInput], {
+  @Field(() => [PaymentWhereUniqueInput], {
     nullable: true,
   })
   @ApiProperty({
     required: false,
-    type: () => [ResidentWhereUniqueInput],
+    type: () => [PaymentWhereUniqueInput],
   })
-  set?: Array<ResidentWhereUniqueInput>;
+  set?: Array<PaymentWhereUniqueInput>;
 }
 
-export { ResidentUpdateManyWithoutUnitsInput as ResidentUpdateManyWithoutUnitsInput };
+export { PaymentUpdateManyWithoutUsersInput as PaymentUpdateManyWithoutUsersInput };

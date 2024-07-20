@@ -21,9 +21,9 @@ import {
   Max,
 } from "class-validator";
 import { Type } from "class-transformer";
-import { Resident } from "../../resident/base/Resident";
 import { Building } from "../../building/base/Building";
 import { Decimal } from "decimal.js";
+import { User } from "../../user/base/User";
 
 @ObjectType()
 class Unit {
@@ -65,15 +65,6 @@ class Unit {
 
   @ApiProperty({
     required: false,
-    type: () => [Resident],
-  })
-  @ValidateNested()
-  @Type(() => Resident)
-  @IsOptional()
-  residents?: Array<Resident>;
-
-  @ApiProperty({
-    required: false,
     type: () => Building,
   })
   @ValidateNested()
@@ -89,6 +80,15 @@ class Unit {
   @Max(99999999999)
   @Field(() => Float)
   dueAmount!: Decimal;
+
+  @ApiProperty({
+    required: false,
+    type: () => [User],
+  })
+  @ValidateNested()
+  @Type(() => User)
+  @IsOptional()
+  users?: Array<User>;
 }
 
 export { Unit as Unit };

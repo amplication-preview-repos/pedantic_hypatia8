@@ -10,7 +10,12 @@ https://docs.amplication.com/how-to/custom-code
 ------------------------------------------------------------------------------
   */
 import { PrismaService } from "../../prisma/prisma.service";
-import { Prisma, User as PrismaUser } from "@prisma/client";
+import {
+  Prisma,
+  User as PrismaUser,
+  Unit as PrismaUnit,
+  Payment as PrismaPayment,
+} from "@prisma/client";
 import { PasswordService } from "../../auth/password.service";
 import { transformStringFieldUpdateInput } from "../../prisma.util";
 
@@ -58,5 +63,27 @@ export class UserServiceBase {
   }
   async deleteUser(args: Prisma.UserDeleteArgs): Promise<PrismaUser> {
     return this.prisma.user.delete(args);
+  }
+
+  async findUnits(
+    parentId: string,
+    args: Prisma.UnitFindManyArgs
+  ): Promise<PrismaUnit[]> {
+    return this.prisma.user
+      .findUniqueOrThrow({
+        where: { id: parentId },
+      })
+      .units(args);
+  }
+
+  async findPayments(
+    parentId: string,
+    args: Prisma.PaymentFindManyArgs
+  ): Promise<PrismaPayment[]> {
+    return this.prisma.user
+      .findUniqueOrThrow({
+        where: { id: parentId },
+      })
+      .payments(args);
   }
 }

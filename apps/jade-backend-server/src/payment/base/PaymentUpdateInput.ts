@@ -18,13 +18,13 @@ import {
   Max,
   IsOptional,
   IsDate,
-  ValidateNested,
   IsString,
   MaxLength,
+  ValidateNested,
 } from "class-validator";
 
 import { Type } from "class-transformer";
-import { ResidentWhereUniqueInput } from "../../resident/base/ResidentWhereUniqueInput";
+import { UserUpdateManyWithoutPaymentsInput } from "./UserUpdateManyWithoutPaymentsInput";
 
 @InputType()
 class PaymentUpdateInput {
@@ -54,18 +54,6 @@ class PaymentUpdateInput {
 
   @ApiProperty({
     required: false,
-    type: () => ResidentWhereUniqueInput,
-  })
-  @ValidateNested()
-  @Type(() => ResidentWhereUniqueInput)
-  @IsOptional()
-  @Field(() => ResidentWhereUniqueInput, {
-    nullable: true,
-  })
-  resident?: ResidentWhereUniqueInput | null;
-
-  @ApiProperty({
-    required: false,
     type: String,
   })
   @IsString()
@@ -75,6 +63,18 @@ class PaymentUpdateInput {
     nullable: true,
   })
   stripePaymentId?: string | null;
+
+  @ApiProperty({
+    required: false,
+    type: () => UserUpdateManyWithoutPaymentsInput,
+  })
+  @ValidateNested()
+  @Type(() => UserUpdateManyWithoutPaymentsInput)
+  @IsOptional()
+  @Field(() => UserUpdateManyWithoutPaymentsInput, {
+    nullable: true,
+  })
+  users?: UserUpdateManyWithoutPaymentsInput;
 }
 
 export { PaymentUpdateInput as PaymentUpdateInput };

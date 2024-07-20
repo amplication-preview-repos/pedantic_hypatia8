@@ -5,29 +5,21 @@ import {
   SimpleForm,
   CreateProps,
   TextInput,
-  ReferenceArrayInput,
-  SelectArrayInput,
   ReferenceInput,
   SelectInput,
   NumberInput,
+  ReferenceArrayInput,
+  SelectArrayInput,
 } from "react-admin";
 
-import { ResidentTitle } from "../resident/ResidentTitle";
 import { BuildingTitle } from "../building/BuildingTitle";
+import { UserTitle } from "../user/UserTitle";
 
 export const UnitCreate = (props: CreateProps): React.ReactElement => {
   return (
     <Create {...props}>
       <SimpleForm>
         <TextInput label="UnitNumber" source="unitNumber" />
-        <ReferenceArrayInput
-          source="residents"
-          reference="Resident"
-          parse={(value: any) => value && value.map((v: any) => ({ id: v }))}
-          format={(value: any) => value && value.map((v: any) => v.id)}
-        >
-          <SelectArrayInput optionText={ResidentTitle} />
-        </ReferenceArrayInput>
         <ReferenceInput
           source="building.id"
           reference="Building"
@@ -36,6 +28,14 @@ export const UnitCreate = (props: CreateProps): React.ReactElement => {
           <SelectInput optionText={BuildingTitle} />
         </ReferenceInput>
         <NumberInput label="Due Amount" source="dueAmount" />
+        <ReferenceArrayInput
+          source="users"
+          reference="User"
+          parse={(value: any) => value && value.map((v: any) => ({ id: v }))}
+          format={(value: any) => value && value.map((v: any) => v.id)}
+        >
+          <SelectArrayInput optionText={UserTitle} />
+        </ReferenceArrayInput>
       </SimpleForm>
     </Create>
   );

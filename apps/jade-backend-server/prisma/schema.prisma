@@ -8,14 +8,14 @@ generator client {
 }
 
 model Unit {
-  id         String     @id @default(cuid())
-  createdAt  DateTime   @default(now())
-  updatedAt  DateTime   @updatedAt
+  id         String    @id @default(cuid())
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @updatedAt
   unitNumber String?
-  residents  Resident[]
-  building   Building?  @relation(fields: [buildingId], references: [id])
+  building   Building? @relation(fields: [buildingId], references: [id])
   buildingId String?
   dueAmount  Decimal
+  users      User[]
 }
 
 model Building {
@@ -31,40 +31,29 @@ model Building {
   phone          String?
 }
 
-model Resident {
-  id          String    @id @default(cuid())
-  createdAt   DateTime  @default(now())
-  updatedAt   DateTime  @updatedAt
-  firstName   String?
-  lastName    String?
-  email       String?
-  phoneNumber String?
-  unit        Unit?     @relation(fields: [unitId], references: [id])
-  unitId      String?
-  payments    Payment[]
-}
-
 model Payment {
   id              String    @id @default(cuid())
   createdAt       DateTime  @default(now())
   updatedAt       DateTime  @updatedAt
   amount          Float?
   paymentDate     DateTime?
-  resident        Resident? @relation(fields: [residentId], references: [id])
-  residentId      String?
   stripePaymentId String?   @unique
+  users           User[]
 }
 
 model User {
-  id        String   @id @default(cuid())
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  firstName String?
-  lastName  String?
-  username  String   @unique
-  email     String?  @unique
-  password  String
-  roles     Json
+  id          String    @id @default(cuid())
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  firstName   String?
+  lastName    String?
+  username    String    @unique
+  email       String?   @unique
+  password    String
+  roles       Json
+  units       Unit[]
+  payments    Payment[]
+  phoneNumber String?
 }
 
 enum EnumBuildingCountryCode {

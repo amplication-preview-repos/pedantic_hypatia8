@@ -13,10 +13,6 @@ import { BuildingList } from "./building/BuildingList";
 import { BuildingCreate } from "./building/BuildingCreate";
 import { BuildingEdit } from "./building/BuildingEdit";
 import { BuildingShow } from "./building/BuildingShow";
-import { ResidentList } from "./resident/ResidentList";
-import { ResidentCreate } from "./resident/ResidentCreate";
-import { ResidentEdit } from "./resident/ResidentEdit";
-import { ResidentShow } from "./resident/ResidentShow";
 import { PaymentList } from "./payment/PaymentList";
 import { PaymentCreate } from "./payment/PaymentCreate";
 import { PaymentEdit } from "./payment/PaymentEdit";
@@ -64,13 +60,6 @@ const App = (): React.ReactElement => {
           edit={BuildingEdit}
           create={BuildingCreate}
           show={BuildingShow}
-        />
-        <Resource
-          name="Resident"
-          list={ResidentList}
-          edit={ResidentEdit}
-          create={ResidentCreate}
-          show={ResidentShow}
         />
         <Resource
           name="Payment"

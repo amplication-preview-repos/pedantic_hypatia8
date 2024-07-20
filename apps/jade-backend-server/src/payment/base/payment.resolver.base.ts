@@ -26,7 +26,8 @@ import { PaymentFindUniqueArgs } from "./PaymentFindUniqueArgs";
 import { CreatePaymentArgs } from "./CreatePaymentArgs";
 import { UpdatePaymentArgs } from "./UpdatePaymentArgs";
 import { DeletePaymentArgs } from "./DeletePaymentArgs";
-import { Resident } from "../../resident/base/Resident";
+import { UserFindManyArgs } from "../../user/base/UserFindManyArgs";
+import { User } from "../../user/base/User";
 import { PaymentService } from "../payment.service";
 @common.UseGuards(GqlDefaultAuthGuard, gqlACGuard.GqlACGuard)
 @graphql.Resolver(() => Payment)
@@ -93,15 +94,7 @@ export class PaymentResolverBase {
   ): Promise<Payment> {
     return await this.service.createPayment({
       ...args,
-      data: {
-        ...args.data,
-
-        resident: args.data.resident
-          ? {
-              connect: args.data.resident,
-            }
-          : undefined,
-      },
+      data: args.data,
     });
   }
 
@@ -118,15 +111,7 @@ export class PaymentResolverBase {
     try {
       return await this.service.updatePayment({
         ...args,
-        data: {
-          ...args.data,
-
-          resident: args.data.resident
-            ? {
-                connect: args.data.resident,
-              }
-            : undefined,
-        },
+        data: args.data,
       });
     } catch (error) {
       if (isRecordNotFoundError(error)) {
@@ -160,23 +145,22 @@ export class PaymentResolverBase {
   }
 
   @common.UseInterceptors(AclFilterResponseInterceptor)
-  @graphql.ResolveField(() => Resident, {
-    nullable: true,
-    name: "resident",
-  })
+  @graphql.ResolveField(() => [User], { name: "users" })
   @nestAccessControl.UseRoles({
-    resource: "Resident",
+    resource: "User",
     action: "read",
     possession: "any",
   })
-  async getResident(
-    @graphql.Parent() parent: Payment
-  ): Promise<Resident | null> {
-    const result = await this.service.getResident(parent.id);
+  async findUsers(
+    @graphql.Parent() parent: Payment,
+    @graphql.Args() args: UserFindManyArgs
+  ): Promise<User[]> {
+    const results = await this.service.findUsers(parent.id, args);
 
-    if (!result) {
-      return null;
+    if (!results) {
+      return [];
     }
-    return result;
+
+    return results;
   }
 }
