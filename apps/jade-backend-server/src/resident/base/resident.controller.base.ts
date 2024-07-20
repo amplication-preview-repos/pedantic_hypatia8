@@ -16,11 +16,7 @@ import * as errors from "../../errors";
 import { Request } from "express";
 import { plainToClass } from "class-transformer";
 import { ApiNestedQuery } from "../../decorators/api-nested-query.decorator";
-import * as nestAccessControl from "nest-access-control";
-import * as defaultAuthGuard from "../../auth/defaultAuth.guard";
 import { ResidentService } from "../resident.service";
-import { AclValidateRequestInterceptor } from "../../interceptors/aclValidateRequest.interceptor";
-import { AclFilterResponseInterceptor } from "../../interceptors/aclFilterResponse.interceptor";
 import { ResidentCreateInput } from "./ResidentCreateInput";
 import { Resident } from "./Resident";
 import { ResidentFindManyArgs } from "./ResidentFindManyArgs";
@@ -30,24 +26,10 @@ import { PaymentFindManyArgs } from "../../payment/base/PaymentFindManyArgs";
 import { Payment } from "../../payment/base/Payment";
 import { PaymentWhereUniqueInput } from "../../payment/base/PaymentWhereUniqueInput";
 
-@swagger.ApiBearerAuth()
-@common.UseGuards(defaultAuthGuard.DefaultAuthGuard, nestAccessControl.ACGuard)
 export class ResidentControllerBase {
-  constructor(
-    protected readonly service: ResidentService,
-    protected readonly rolesBuilder: nestAccessControl.RolesBuilder
-  ) {}
-  @common.UseInterceptors(AclValidateRequestInterceptor)
+  constructor(protected readonly service: ResidentService) {}
   @common.Post()
   @swagger.ApiCreatedResponse({ type: Resident })
-  @nestAccessControl.UseRoles({
-    resource: "Resident",
-    action: "create",
-    possession: "any",
-  })
-  @swagger.ApiForbiddenResponse({
-    type: errors.ForbiddenException,
-  })
   async createResident(
     @common.Body() data: ResidentCreateInput
   ): Promise<Resident> {
@@ -79,18 +61,9 @@ export class ResidentControllerBase {
     });
   }
 
-  @common.UseInterceptors(AclFilterResponseInterceptor)
   @common.Get()
   @swagger.ApiOkResponse({ type: [Resident] })
   @ApiNestedQuery(ResidentFindManyArgs)
-  @nestAccessControl.UseRoles({
-    resource: "Resident",
-    action: "read",
-    possession: "any",
-  })
-  @swagger.ApiForbiddenResponse({
-    type: errors.ForbiddenException,
-  })
   async residents(@common.Req() request: Request): Promise<Resident[]> {
     const args = plainToClass(ResidentFindManyArgs, request.query);
     return this.service.residents({
@@ -113,18 +86,9 @@ export class ResidentControllerBase {
     });
   }
 
-  @common.UseInterceptors(AclFilterResponseInterceptor)
   @common.Get("/:id")
   @swagger.ApiOkResponse({ type: Resident })
   @swagger.ApiNotFoundResponse({ type: errors.NotFoundException })
-  @nestAccessControl.UseRoles({
-    resource: "Resident",
-    action: "read",
-    possession: "own",
-  })
-  @swagger.ApiForbiddenResponse({
-    type: errors.ForbiddenException,
-  })
   async resident(
     @common.Param() params: ResidentWhereUniqueInput
   ): Promise<Resident | null> {
@@ -154,18 +118,9 @@ export class ResidentControllerBase {
     return result;
   }
 
-  @common.UseInterceptors(AclValidateRequestInterceptor)
   @common.Patch("/:id")
   @swagger.ApiOkResponse({ type: Resident })
   @swagger.ApiNotFoundResponse({ type: errors.NotFoundException })
-  @nestAccessControl.UseRoles({
-    resource: "Resident",
-    action: "update",
-    possession: "any",
-  })
-  @swagger.ApiForbiddenResponse({
-    type: errors.ForbiddenException,
-  })
   async updateResident(
     @common.Param() params: ResidentWhereUniqueInput,
     @common.Body() data: ResidentUpdateInput
@@ -211,14 +166,6 @@ export class ResidentControllerBase {
   @common.Delete("/:id")
   @swagger.ApiOkResponse({ type: Resident })
   @swagger.ApiNotFoundResponse({ type: errors.NotFoundException })
-  @nestAccessControl.UseRoles({
-    resource: "Resident",
-    action: "delete",
-    possession: "any",
-  })
-  @swagger.ApiForbiddenResponse({
-    type: errors.ForbiddenException,
-  })
   async deleteResident(
     @common.Param() params: ResidentWhereUniqueInput
   ): Promise<Resident | null> {
@@ -251,14 +198,8 @@ export class ResidentControllerBase {
     }
   }
 
-  @common.UseInterceptors(AclFilterResponseInterceptor)
   @common.Get("/:id/payments")
   @ApiNestedQuery(PaymentFindManyArgs)
-  @nestAccessControl.UseRoles({
-    resource: "Payment",
-    action: "read",
-    possession: "any",
-  })
   async findPayments(
     @common.Req() request: Request,
     @common.Param() params: ResidentWhereUniqueInput
@@ -291,11 +232,6 @@ export class ResidentControllerBase {
   }
 
   @common.Post("/:id/payments")
-  @nestAccessControl.UseRoles({
-    resource: "Resident",
-    action: "update",
-    possession: "any",
-  })
   async connectPayments(
     @common.Param() params: ResidentWhereUniqueInput,
     @common.Body() body: PaymentWhereUniqueInput[]
@@ -313,11 +249,6 @@ export class ResidentControllerBase {
   }
 
   @common.Patch("/:id/payments")
-  @nestAccessControl.UseRoles({
-    resource: "Resident",
-    action: "update",
-    possession: "any",
-  })
   async updatePayments(
     @common.Param() params: ResidentWhereUniqueInput,
     @common.Body() body: PaymentWhereUniqueInput[]
@@ -335,11 +266,6 @@ export class ResidentControllerBase {
   }
 
   @common.Delete("/:id/payments")
-  @nestAccessControl.UseRoles({
-    resource: "Resident",
-    action: "update",
-    possession: "any",
-  })
   async disconnectPayments(
     @common.Param() params: ResidentWhereUniqueInput,
     @common.Body() body: PaymentWhereUniqueInput[]

@@ -1,17 +1,4 @@
 import { Module } from "@nestjs/common";
-
-import {
-  OpenTelemetryModule,
-  PipeInjector,
-  ControllerInjector,
-  EventEmitterInjector,
-  GraphQLResolverInjector,
-  GuardInjector,
-} from "@amplication/opentelemetry-nestjs";
-
-import { HttpInstrumentation } from "@opentelemetry/instrumentation-http";
-import { OTLPTraceExporter } from "@opentelemetry/exporter-trace-otlp-grpc";
-import { BatchSpanProcessor } from "@opentelemetry/sdk-trace-node";
 import { UnitModule } from "./unit/unit.module";
 import { BuildingModule } from "./building/building.module";
 import { ResidentModule } from "./resident/resident.module";
@@ -26,14 +13,9 @@ import { ConfigModule, ConfigService } from "@nestjs/config";
 import { GraphQLModule } from "@nestjs/graphql";
 import { ApolloDriver, ApolloDriverConfig } from "@nestjs/apollo";
 
-import { ACLModule } from "./auth/acl.module";
-import { AuthModule } from "./auth/auth.module";
-
 @Module({
   controllers: [],
   imports: [
-    ACLModule,
-    AuthModule,
     UnitModule,
     BuildingModule,
     ResidentModule,
@@ -60,26 +42,6 @@ import { AuthModule } from "./auth/auth.module";
       },
       inject: [ConfigService],
       imports: [ConfigModule],
-    }),
-    OpenTelemetryModule.forRoot({
-      serviceName: "jade_backend",
-      spanProcessor: new BatchSpanProcessor(new OTLPTraceExporter()),
-      instrumentations: [
-        new HttpInstrumentation({
-          requestHook: (span, request) => {
-            if (request.method)
-              span.setAttribute("http.method", request.method);
-          },
-        }),
-      ],
-
-      traceAutoInjectors: [
-        ControllerInjector,
-        EventEmitterInjector,
-        GraphQLResolverInjector,
-        GuardInjector,
-        PipeInjector,
-      ],
     }),
   ],
   providers: [],

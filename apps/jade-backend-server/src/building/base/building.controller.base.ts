@@ -16,11 +16,7 @@ import * as errors from "../../errors";
 import { Request } from "express";
 import { plainToClass } from "class-transformer";
 import { ApiNestedQuery } from "../../decorators/api-nested-query.decorator";
-import * as nestAccessControl from "nest-access-control";
-import * as defaultAuthGuard from "../../auth/defaultAuth.guard";
 import { BuildingService } from "../building.service";
-import { AclValidateRequestInterceptor } from "../../interceptors/aclValidateRequest.interceptor";
-import { AclFilterResponseInterceptor } from "../../interceptors/aclFilterResponse.interceptor";
 import { BuildingCreateInput } from "./BuildingCreateInput";
 import { Building } from "./Building";
 import { BuildingFindManyArgs } from "./BuildingFindManyArgs";
@@ -30,24 +26,10 @@ import { UnitFindManyArgs } from "../../unit/base/UnitFindManyArgs";
 import { Unit } from "../../unit/base/Unit";
 import { UnitWhereUniqueInput } from "../../unit/base/UnitWhereUniqueInput";
 
-@swagger.ApiBearerAuth()
-@common.UseGuards(defaultAuthGuard.DefaultAuthGuard, nestAccessControl.ACGuard)
 export class BuildingControllerBase {
-  constructor(
-    protected readonly service: BuildingService,
-    protected readonly rolesBuilder: nestAccessControl.RolesBuilder
-  ) {}
-  @common.UseInterceptors(AclValidateRequestInterceptor)
+  constructor(protected readonly service: BuildingService) {}
   @common.Post()
   @swagger.ApiCreatedResponse({ type: Building })
-  @nestAccessControl.UseRoles({
-    resource: "Building",
-    action: "create",
-    possession: "any",
-  })
-  @swagger.ApiForbiddenResponse({
-    type: errors.ForbiddenException,
-  })
   async createBuilding(
     @common.Body() data: BuildingCreateInput
   ): Promise<Building> {
@@ -67,18 +49,9 @@ export class BuildingControllerBase {
     });
   }
 
-  @common.UseInterceptors(AclFilterResponseInterceptor)
   @common.Get()
   @swagger.ApiOkResponse({ type: [Building] })
   @ApiNestedQuery(BuildingFindManyArgs)
-  @nestAccessControl.UseRoles({
-    resource: "Building",
-    action: "read",
-    possession: "any",
-  })
-  @swagger.ApiForbiddenResponse({
-    type: errors.ForbiddenException,
-  })
   async buildings(@common.Req() request: Request): Promise<Building[]> {
     const args = plainToClass(BuildingFindManyArgs, request.query);
     return this.service.buildings({
@@ -97,18 +70,9 @@ export class BuildingControllerBase {
     });
   }
 
-  @common.UseInterceptors(AclFilterResponseInterceptor)
   @common.Get("/:id")
   @swagger.ApiOkResponse({ type: Building })
   @swagger.ApiNotFoundResponse({ type: errors.NotFoundException })
-  @nestAccessControl.UseRoles({
-    resource: "Building",
-    action: "read",
-    possession: "own",
-  })
-  @swagger.ApiForbiddenResponse({
-    type: errors.ForbiddenException,
-  })
   async building(
     @common.Param() params: BuildingWhereUniqueInput
   ): Promise<Building | null> {
@@ -134,18 +98,9 @@ export class BuildingControllerBase {
     return result;
   }
 
-  @common.UseInterceptors(AclValidateRequestInterceptor)
   @common.Patch("/:id")
   @swagger.ApiOkResponse({ type: Building })
   @swagger.ApiNotFoundResponse({ type: errors.NotFoundException })
-  @nestAccessControl.UseRoles({
-    resource: "Building",
-    action: "update",
-    possession: "any",
-  })
-  @swagger.ApiForbiddenResponse({
-    type: errors.ForbiddenException,
-  })
   async updateBuilding(
     @common.Param() params: BuildingWhereUniqueInput,
     @common.Body() data: BuildingUpdateInput
@@ -179,14 +134,6 @@ export class BuildingControllerBase {
   @common.Delete("/:id")
   @swagger.ApiOkResponse({ type: Building })
   @swagger.ApiNotFoundResponse({ type: errors.NotFoundException })
-  @nestAccessControl.UseRoles({
-    resource: "Building",
-    action: "delete",
-    possession: "any",
-  })
-  @swagger.ApiForbiddenResponse({
-    type: errors.ForbiddenException,
-  })
   async deleteBuilding(
     @common.Param() params: BuildingWhereUniqueInput
   ): Promise<Building | null> {
@@ -215,14 +162,8 @@ export class BuildingControllerBase {
     }
   }
 
-  @common.UseInterceptors(AclFilterResponseInterceptor)
   @common.Get("/:id/units")
   @ApiNestedQuery(UnitFindManyArgs)
-  @nestAccessControl.UseRoles({
-    resource: "Unit",
-    action: "read",
-    possession: "any",
-  })
   async findUnits(
     @common.Req() request: Request,
     @common.Param() params: BuildingWhereUniqueInput
@@ -254,11 +195,6 @@ export class BuildingControllerBase {
   }
 
   @common.Post("/:id/units")
-  @nestAccessControl.UseRoles({
-    resource: "Building",
-    action: "update",
-    possession: "any",
-  })
   async connectUnits(
     @common.Param() params: BuildingWhereUniqueInput,
     @common.Body() body: UnitWhereUniqueInput[]
@@ -276,11 +212,6 @@ export class BuildingControllerBase {
   }
 
   @common.Patch("/:id/units")
-  @nestAccessControl.UseRoles({
-    resource: "Building",
-    action: "update",
-    possession: "any",
-  })
   async updateUnits(
     @common.Param() params: BuildingWhereUniqueInput,
     @common.Body() body: UnitWhereUniqueInput[]
@@ -298,11 +229,6 @@ export class BuildingControllerBase {
   }
 
   @common.Delete("/:id/units")
-  @nestAccessControl.UseRoles({
-    resource: "Building",
-    action: "update",
-    possession: "any",
-  })
   async disconnectUnits(
     @common.Param() params: BuildingWhereUniqueInput,
     @common.Body() body: UnitWhereUniqueInput[]

@@ -13,12 +13,6 @@ import * as graphql from "@nestjs/graphql";
 import { GraphQLError } from "graphql";
 import { isRecordNotFoundError } from "../../prisma.util";
 import { MetaQueryPayload } from "../../util/MetaQueryPayload";
-import * as nestAccessControl from "nest-access-control";
-import * as gqlACGuard from "../../auth/gqlAC.guard";
-import { GqlDefaultAuthGuard } from "../../auth/gqlDefaultAuth.guard";
-import * as common from "@nestjs/common";
-import { AclFilterResponseInterceptor } from "../../interceptors/aclFilterResponse.interceptor";
-import { AclValidateRequestInterceptor } from "../../interceptors/aclValidateRequest.interceptor";
 import { Unit } from "./Unit";
 import { UnitCountArgs } from "./UnitCountArgs";
 import { UnitFindManyArgs } from "./UnitFindManyArgs";
@@ -30,20 +24,10 @@ import { ResidentFindManyArgs } from "../../resident/base/ResidentFindManyArgs";
 import { Resident } from "../../resident/base/Resident";
 import { Building } from "../../building/base/Building";
 import { UnitService } from "../unit.service";
-@common.UseGuards(GqlDefaultAuthGuard, gqlACGuard.GqlACGuard)
 @graphql.Resolver(() => Unit)
 export class UnitResolverBase {
-  constructor(
-    protected readonly service: UnitService,
-    protected readonly rolesBuilder: nestAccessControl.RolesBuilder
-  ) {}
+  constructor(protected readonly service: UnitService) {}
 
-  @graphql.Query(() => MetaQueryPayload)
-  @nestAccessControl.UseRoles({
-    resource: "Unit",
-    action: "read",
-    possession: "any",
-  })
   async _unitsMeta(
     @graphql.Args() args: UnitCountArgs
   ): Promise<MetaQueryPayload> {
@@ -53,24 +37,12 @@ export class UnitResolverBase {
     };
   }
 
-  @common.UseInterceptors(AclFilterResponseInterceptor)
   @graphql.Query(() => [Unit])
-  @nestAccessControl.UseRoles({
-    resource: "Unit",
-    action: "read",
-    possession: "any",
-  })
   async units(@graphql.Args() args: UnitFindManyArgs): Promise<Unit[]> {
     return this.service.units(args);
   }
 
-  @common.UseInterceptors(AclFilterResponseInterceptor)
   @graphql.Query(() => Unit, { nullable: true })
-  @nestAccessControl.UseRoles({
-    resource: "Unit",
-    action: "read",
-    possession: "own",
-  })
   async unit(@graphql.Args() args: UnitFindUniqueArgs): Promise<Unit | null> {
     const result = await this.service.unit(args);
     if (result === null) {
@@ -79,13 +51,7 @@ export class UnitResolverBase {
     return result;
   }
 
-  @common.UseInterceptors(AclValidateRequestInterceptor)
   @graphql.Mutation(() => Unit)
-  @nestAccessControl.UseRoles({
-    resource: "Unit",
-    action: "create",
-    possession: "any",
-  })
   async createUnit(@graphql.Args() args: CreateUnitArgs): Promise<Unit> {
     return await this.service.createUnit({
       ...args,
@@ -101,13 +67,7 @@ export class UnitResolverBase {
     });
   }
 
-  @common.UseInterceptors(AclValidateRequestInterceptor)
   @graphql.Mutation(() => Unit)
-  @nestAccessControl.UseRoles({
-    resource: "Unit",
-    action: "update",
-    possession: "any",
-  })
   async updateUnit(@graphql.Args() args: UpdateUnitArgs): Promise<Unit | null> {
     try {
       return await this.service.updateUnit({
@@ -133,11 +93,6 @@ export class UnitResolverBase {
   }
 
   @graphql.Mutation(() => Unit)
-  @nestAccessControl.UseRoles({
-    resource: "Unit",
-    action: "delete",
-    possession: "any",
-  })
   async deleteUnit(@graphql.Args() args: DeleteUnitArgs): Promise<Unit | null> {
     try {
       return await this.service.deleteUnit(args);
@@ -151,13 +106,7 @@ export class UnitResolverBase {
     }
   }
 
-  @common.UseInterceptors(AclFilterResponseInterceptor)
   @graphql.ResolveField(() => [Resident], { name: "residents" })
-  @nestAccessControl.UseRoles({
-    resource: "Resident",
-    action: "read",
-    possession: "any",
-  })
   async findResidents(
     @graphql.Parent() parent: Unit,
     @graphql.Args() args: ResidentFindManyArgs
@@ -171,15 +120,9 @@ export class UnitResolverBase {
     return results;
   }
 
-  @common.UseInterceptors(AclFilterResponseInterceptor)
   @graphql.ResolveField(() => Building, {
     nullable: true,
     name: "building",
-  })
-  @nestAccessControl.UseRoles({
-    resource: "Building",
-    action: "read",
-    possession: "any",
   })
   async getBuilding(@graphql.Parent() parent: Unit): Promise<Building | null> {
     const result = await this.service.getBuilding(parent.id);
