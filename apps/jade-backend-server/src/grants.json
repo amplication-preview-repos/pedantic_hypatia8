@@ -1,0 +1,380 @@
+[
+  {
+    "role": "service",
+    "resource": "Unit",
+    "action": "read:own",
+    "attributes": "*"
+  },
+  {
+    "role": "contractor",
+    "resource": "Unit",
+    "action": "read:own",
+    "attributes": "*"
+  },
+  {
+    "role": "admin",
+    "resource": "Unit",
+    "action": "read:own",
+    "attributes": "*"
+  },
+  {
+    "role": "manager",
+    "resource": "Unit",
+    "action": "read:own",
+    "attributes": "*"
+  },
+  {
+    "role": "service",
+    "resource": "Unit",
+    "action": "create:any",
+    "attributes": "*"
+  },
+  {
+    "role": "admin",
+    "resource": "Unit",
+    "action": "create:any",
+    "attributes": "*"
+  },
+  {
+    "role": "manager",
+    "resource": "Unit",
+    "action": "create:any",
+    "attributes": "*"
+  },
+  {
+    "role": "service",
+    "resource": "Unit",
+    "action": "update:any",
+    "attributes": "*"
+  },
+  {
+    "role": "admin",
+    "resource": "Unit",
+    "action": "update:any",
+    "attributes": "*"
+  },
+  {
+    "role": "manager",
+    "resource": "Unit",
+    "action": "update:any",
+    "attributes": "*"
+  },
+  {
+    "role": "service",
+    "resource": "Unit",
+    "action": "delete:any",
+    "attributes": "*"
+  },
+  {
+    "role": "admin",
+    "resource": "Unit",
+    "action": "delete:any",
+    "attributes": "*"
+  },
+  {
+    "role": "service",
+    "resource": "Unit",
+    "action": "read:any",
+    "attributes": "*"
+  },
+  {
+    "role": "contractor",
+    "resource": "Unit",
+    "action": "read:any",
+    "attributes": "*"
+  },
+  {
+    "role": "admin",
+    "resource": "Unit",
+    "action": "read:any",
+    "attributes": "*"
+  },
+  {
+    "role": "manager",
+    "resource": "Unit",
+    "action": "read:any",
+    "attributes": "*"
+  },
+  {
+    "role": "contractor",
+    "resource": "Building",
+    "action": "read:own",
+    "attributes": "*"
+  },
+  {
+    "role": "service",
+    "resource": "Resident",
+    "action": "read:own",
+    "attributes": "*"
+  },
+  {
+    "role": "contractor",
+    "resource": "Resident",
+    "action": "read:own",
+    "attributes": "*,!payments"
+  },
+  {
+    "role": "admin",
+    "resource": "Resident",
+    "action": "read:own",
+    "attributes": "*"
+  },
+  {
+    "role": "manager",
+    "resource": "Resident",
+    "action": "read:own",
+    "attributes": "*"
+  },
+  {
+    "role": "service",
+    "resource": "Resident",
+    "action": "create:any",
+    "attributes": "*"
+  },
+  {
+    "role": "admin",
+    "resource": "Resident",
+    "action": "create:any",
+    "attributes": "*"
+  },
+  {
+    "role": "manager",
+    "resource": "Resident",
+    "action": "create:any",
+    "attributes": "*"
+  },
+  {
+    "role": "service",
+    "resource": "Resident",
+    "action": "update:any",
+    "attributes": "*"
+  },
+  {
+    "role": "admin",
+    "resource": "Resident",
+    "action": "update:any",
+    "attributes": "*"
+  },
+  {
+    "role": "manager",
+    "resource": "Resident",
+    "action": "update:any",
+    "attributes": "*"
+  },
+  {
+    "role": "admin",
+    "resource": "Resident",
+    "action": "delete:any",
+    "attributes": "*"
+  },
+  {
+    "role": "manager",
+    "resource": "Resident",
+    "action": "delete:any",
+    "attributes": "*"
+  },
+  {
+    "role": "service",
+    "resource": "Resident",
+    "action": "read:any",
+    "attributes": "*"
+  },
+  {
+    "role": "contractor",
+    "resource": "Resident",
+    "action": "read:any",
+    "attributes": "*"
+  },
+  {
+    "role": "admin",
+    "resource": "Resident",
+    "action": "read:any",
+    "attributes": "*"
+  },
+  {
+    "role": "manager",
+    "resource": "Resident",
+    "action": "read:any",
+    "attributes": "*"
+  },
+  {
+    "role": "service",
+    "resource": "Payment",
+    "action": "create:any",
+    "attributes": "*"
+  },
+  {
+    "role": "service",
+    "resource": "Payment",
+    "action": "read:any",
+    "attributes": "*"
+  },
+  {
+    "role": "admin",
+    "resource": "Payment",
+    "action": "read:any",
+    "attributes": "*"
+  },
+  {
+    "role": "manager",
+    "resource": "Payment",
+    "action": "read:any",
+    "attributes": "*"
+  },
+  {
+    "role": "resident",
+    "resource": "Payment",
+    "action": "read:any",
+    "attributes": "*"
+  },
+  {
+    "role": "admin",
+    "resource": "User",
+    "action": "read:own",
+    "attributes": "*"
+  },
+  {
+    "role": "contractor",
+    "resource": "User",
+    "action": "read:own",
+    "attributes": "*"
+  },
+  {
+    "role": "manager",
+    "resource": "User",
+    "action": "read:own",
+    "attributes": "*"
+  },
+  {
+    "role": "resident",
+    "resource": "User",
+    "action": "read:own",
+    "attributes": "*"
+  },
+  {
+    "role": "service",
+    "resource": "User",
+    "action": "read:own",
+    "attributes": "*"
+  },
+  {
+    "role": "admin",
+    "resource": "User",
+    "action": "create:any",
+    "attributes": "*"
+  },
+  {
+    "role": "contractor",
+    "resource": "User",
+    "action": "create:any",
+    "attributes": "*"
+  },
+  {
+    "role": "manager",
+    "resource": "User",
+    "action": "create:any",
+    "attributes": "*"
+  },
+  {
+    "role": "resident",
+    "resource": "User",
+    "action": "create:any",
+    "attributes": "*"
+  },
+  {
+    "role": "service",
+    "resource": "User",
+    "action": "create:any",
+    "attributes": "*"
+  },
+  {
+    "role": "admin",
+    "resource": "User",
+    "action": "update:any",
+    "attributes": "*"
+  },
+  {
+    "role": "contractor",
+    "resource": "User",
+    "action": "update:any",
+    "attributes": "*"
+  },
+  {
+    "role": "manager",
+    "resource": "User",
+    "action": "update:any",
+    "attributes": "*"
+  },
+  {
+    "role": "resident",
+    "resource": "User",
+    "action": "update:any",
+    "attributes": "*"
+  },
+  {
+    "role": "service",
+    "resource": "User",
+    "action": "update:any",
+    "attributes": "*"
+  },
+  {
+    "role": "admin",
+    "resource": "User",
+    "action": "delete:any",
+    "attributes": "*"
+  },
+  {
+    "role": "contractor",
+    "resource": "User",
+    "action": "delete:any",
+    "attributes": "*"
+  },
+  {
+    "role": "manager",
+    "resource": "User",
+    "action": "delete:any",
+    "attributes": "*"
+  },
+  {
+    "role": "resident",
+    "resource": "User",
+    "action": "delete:any",
+    "attributes": "*"
+  },
+  {
+    "role": "service",
+    "resource": "User",
+    "action": "delete:any",
+    "attributes": "*"
+  },
+  {
+    "role": "admin",
+    "resource": "User",
+    "action": "read:any",
+    "attributes": "*"
+  },
+  {
+    "role": "contractor",
+    "resource": "User",
+    "action": "read:any",
+    "attributes": "*"
+  },
+  {
+    "role": "manager",
+    "resource": "User",
+    "action": "read:any",
+    "attributes": "*"
+  },
+  {
+    "role": "resident",
+    "resource": "User",
+    "action": "read:any",
+    "attributes": "*"
+  },
+  {
+    "role": "service",
+    "resource": "User",
+    "action": "read:any",
+    "attributes": "*"
+  }
+]

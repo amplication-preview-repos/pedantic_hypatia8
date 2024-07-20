@@ -16,7 +16,11 @@ import * as errors from "../../errors";
 import { Request } from "express";
 import { plainToClass } from "class-transformer";
 import { ApiNestedQuery } from "../../decorators/api-nested-query.decorator";
+import * as nestAccessControl from "nest-access-control";
+import * as defaultAuthGuard from "../../auth/defaultAuth.guard";
 import { UnitService } from "../unit.service";
+import { AclValidateRequestInterceptor } from "../../interceptors/aclValidateRequest.interceptor";
+import { AclFilterResponseInterceptor } from "../../interceptors/aclFilterResponse.interceptor";
 import { UnitCreateInput } from "./UnitCreateInput";
 import { Unit } from "./Unit";
 import { UnitFindManyArgs } from "./UnitFindManyArgs";
@@ -26,10 +30,24 @@ import { ResidentFindManyArgs } from "../../resident/base/ResidentFindManyArgs";
 import { Resident } from "../../resident/base/Resident";
 import { ResidentWhereUniqueInput } from "../../resident/base/ResidentWhereUniqueInput";
 
+@swagger.ApiBearerAuth()
+@common.UseGuards(defaultAuthGuard.DefaultAuthGuard, nestAccessControl.ACGuard)
 export class UnitControllerBase {
-  constructor(protected readonly service: UnitService) {}
+  constructor(
+    protected readonly service: UnitService,
+    protected readonly rolesBuilder: nestAccessControl.RolesBuilder
+  ) {}
+  @common.UseInterceptors(AclValidateRequestInterceptor)
   @common.Post()
   @swagger.ApiCreatedResponse({ type: Unit })
+  @nestAccessControl.UseRoles({
+    resource: "Unit",
+    action: "create",
+    possession: "any",
+  })
+  @swagger.ApiForbiddenResponse({
+    type: errors.ForbiddenException,
+  })
   async createUnit(@common.Body() data: UnitCreateInput): Promise<Unit> {
     return await this.service.createUnit({
       data: {
@@ -58,9 +76,18 @@ export class UnitControllerBase {
     });
   }
 
+  @common.UseInterceptors(AclFilterResponseInterceptor)
   @common.Get()
   @swagger.ApiOkResponse({ type: [Unit] })
   @ApiNestedQuery(UnitFindManyArgs)
+  @nestAccessControl.UseRoles({
+    resource: "Unit",
+    action: "read",
+    possession: "any",
+  })
+  @swagger.ApiForbiddenResponse({
+    type: errors.ForbiddenException,
+  })
   async units(@common.Req() request: Request): Promise<Unit[]> {
     const args = plainToClass(UnitFindManyArgs, request.query);
     return this.service.units({
@@ -82,9 +109,18 @@ export class UnitControllerBase {
     });
   }
 
+  @common.UseInterceptors(AclFilterResponseInterceptor)
   @common.Get("/:id")
   @swagger.ApiOkResponse({ type: Unit })
   @swagger.ApiNotFoundResponse({ type: errors.NotFoundException })
+  @nestAccessControl.UseRoles({
+    resource: "Unit",
+    action: "read",
+    possession: "own",
+  })
+  @swagger.ApiForbiddenResponse({
+    type: errors.ForbiddenException,
+  })
   async unit(
     @common.Param() params: UnitWhereUniqueInput
   ): Promise<Unit | null> {
@@ -113,9 +149,18 @@ export class UnitControllerBase {
     return result;
   }
 
+  @common.UseInterceptors(AclValidateRequestInterceptor)
   @common.Patch("/:id")
   @swagger.ApiOkResponse({ type: Unit })
   @swagger.ApiNotFoundResponse({ type: errors.NotFoundException })
+  @nestAccessControl.UseRoles({
+    resource: "Unit",
+    action: "update",
+    possession: "any",
+  })
+  @swagger.ApiForbiddenResponse({
+    type: errors.ForbiddenException,
+  })
   async updateUnit(
     @common.Param() params: UnitWhereUniqueInput,
     @common.Body() data: UnitUpdateInput
@@ -160,6 +205,14 @@ export class UnitControllerBase {
   @common.Delete("/:id")
   @swagger.ApiOkResponse({ type: Unit })
   @swagger.ApiNotFoundResponse({ type: errors.NotFoundException })
+  @nestAccessControl.UseRoles({
+    resource: "Unit",
+    action: "delete",
+    possession: "any",
+  })
+  @swagger.ApiForbiddenResponse({
+    type: errors.ForbiddenException,
+  })
   async deleteUnit(
     @common.Param() params: UnitWhereUniqueInput
   ): Promise<Unit | null> {
@@ -191,8 +244,14 @@ export class UnitControllerBase {
     }
   }
 
+  @common.UseInterceptors(AclFilterResponseInterceptor)
   @common.Get("/:id/residents")
   @ApiNestedQuery(ResidentFindManyArgs)
+  @nestAccessControl.UseRoles({
+    resource: "Resident",
+    action: "read",
+    possession: "any",
+  })
   async findResidents(
     @common.Req() request: Request,
     @common.Param() params: UnitWhereUniqueInput
@@ -225,6 +284,11 @@ export class UnitControllerBase {
   }
 
   @common.Post("/:id/residents")
+  @nestAccessControl.UseRoles({
+    resource: "Unit",
+    action: "update",
+    possession: "any",
+  })
   async connectResidents(
     @common.Param() params: UnitWhereUniqueInput,
     @common.Body() body: ResidentWhereUniqueInput[]
@@ -242,6 +306,11 @@ export class UnitControllerBase {
   }
 
   @common.Patch("/:id/residents")
+  @nestAccessControl.UseRoles({
+    resource: "Unit",
+    action: "update",
+    possession: "any",
+  })
   async updateResidents(
     @common.Param() params: UnitWhereUniqueInput,
     @common.Body() body: ResidentWhereUniqueInput[]
@@ -259,6 +328,11 @@ export class UnitControllerBase {
   }
 
   @common.Delete("/:id/residents")
+  @nestAccessControl.UseRoles({
+    resource: "Unit",
+    action: "update",
+    possession: "any",
+  })
   async disconnectResidents(
     @common.Param() params: UnitWhereUniqueInput,
     @common.Body() body: ResidentWhereUniqueInput[]
