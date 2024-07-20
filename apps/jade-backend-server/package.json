@@ -16,8 +16,7 @@
     "docker:dev": "docker-compose -f docker-compose.dev.yml up -d",
     "package:container": "docker build .",
     "compose:up": "docker-compose up -d",
-    "compose:down": "docker-compose down --volumes",
-    "ssl:generate": "./scripts/generate-ssl.sh"
+    "compose:down": "docker-compose down --volumes"
   },
   "dependencies": {
     "@amplication/opentelemetry-nestjs": "^4.5.0",
