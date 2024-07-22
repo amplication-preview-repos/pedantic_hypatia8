@@ -72,7 +72,7 @@ class BuildingCreateInput {
   })
   @IsEnum(EnumBuildingCountryCode)
   @Field(() => EnumBuildingCountryCode)
-  countryCode!: "usa";
+  countryCode!: "usa" | "canada";
 
   @ApiProperty({
     required: false,

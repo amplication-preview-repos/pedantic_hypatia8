@@ -8,7 +8,7 @@ export type Building = {
   streetAddress1: string;
   streetAddress2: string | null;
   postalCode: string;
-  countryCode?: "usa";
+  countryCode?: "usa" | "canada";
   units?: Array<Unit>;
   phone: string | null;
 };

@@ -13,6 +13,7 @@ import { registerEnumType } from "@nestjs/graphql";
 
 export enum EnumBuildingCountryCode {
   UnitedStates = "usa",
+  Canada = "canada",
 }
 
 registerEnumType(EnumBuildingCountryCode, {

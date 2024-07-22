@@ -73,7 +73,7 @@ class BuildingWhereInput {
   @Field(() => EnumBuildingCountryCode, {
     nullable: true,
   })
-  countryCode?: "usa";
+  countryCode?: "usa" | "canada";
 
   @ApiProperty({
     required: false,

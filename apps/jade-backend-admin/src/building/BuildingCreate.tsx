@@ -23,7 +23,10 @@ export const BuildingCreate = (props: CreateProps): React.ReactElement => {
         <SelectInput
           source="countryCode"
           label="CountryCode"
-          choices={[{ label: "United States", value: "usa" }]}
+          choices={[
+            { label: "United States", value: "usa" },
+            { label: "Canada", value: "canada" },
+          ]}
           optionText="label"
           optionValue="value"
         />

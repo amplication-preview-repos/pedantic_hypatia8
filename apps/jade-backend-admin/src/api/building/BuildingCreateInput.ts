@@ -5,7 +5,7 @@ export type BuildingCreateInput = {
   streetAddress1: string;
   streetAddress2?: string | null;
   postalCode: string;
-  countryCode: "usa";
+  countryCode: "usa" | "canada";
   units?: UnitCreateNestedManyWithoutBuildingsInput;
   phone?: string | null;
 };

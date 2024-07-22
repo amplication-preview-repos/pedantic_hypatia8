@@ -7,7 +7,7 @@ export type BuildingWhereInput = {
   name?: StringNullableFilter;
   streetAddress1?: StringFilter;
   postalCode?: StringFilter;
-  countryCode?: "usa";
+  countryCode?: "usa" | "canada";
   units?: UnitListRelationFilter;
   phone?: StringNullableFilter;
 };
