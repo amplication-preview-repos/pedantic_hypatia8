@@ -1,0 +1,62 @@
+datasource db {
+  provider = "postgresql"
+  url      = env("DB_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model Unit {
+  id         String    @id @default(cuid())
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @updatedAt
+  unitNumber String?
+  building   Building? @relation(fields: [buildingId], references: [id])
+  buildingId String?
+  dueAmount  Decimal
+  users      User[]
+}
+
+model Building {
+  id             String                  @id @default(cuid())
+  createdAt      DateTime                @default(now())
+  updatedAt      DateTime                @updatedAt
+  name           String?
+  streetAddress1 String
+  streetAddress2 String?
+  postalCode     String
+  countryCode    EnumBuildingCountryCode
+  units          Unit[]
+  phone          String?
+}
+
+model Payment {
+  id              String    @id @default(cuid())
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+  amount          Float?
+  paymentDate     DateTime?
+  stripePaymentId String?   @unique
+  users           User[]
+}
+
+model User {
+  id          String    @id @default(cuid())
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  firstName   String?
+  lastName    String?
+  username    String    @unique
+  email       String?   @unique
+  password    String
+  roles       Json
+  units       Unit[]
+  payments    Payment[]
+  phoneNumber String?
+}
+
+enum EnumBuildingCountryCode {
+  usa
+  canada
+}
